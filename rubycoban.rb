@@ -1,4 +1,4 @@
-#coment dùng # hoặc bao trong =begin/=end
+#coment dùng # hoặc bao trong =begin/=end.
 
 #--------- BEGIN -------#
 # gọi khối lênh trong BEGIN đầu tiên 
