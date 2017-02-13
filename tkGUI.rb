@@ -346,8 +346,7 @@ list.insert 0, "yellow", "gray", "green",
   "pink", "yellow", "orange", "gray"
 list.bind("ButtonRelease-1") {
    index = list.curselection[0]
-   puts list.get index
-   
+   puts list.get index  
 }
 Tk.mainloop
 
@@ -716,3 +715,115 @@ Tk.mainloop
 #text: tiêu đề của tab
 #state: normal, disabled, hidden
 
+#---------- Panedwindow
+
+require 'tk'
+require 'tkextlib/tile'
+
+$resultsVar = TkVariable.new
+root = TkRoot.new
+root.title = "Window"
+
+p = Tk::Tile::Paned.new(root){
+  height 110
+  place('height' => 100, 'width' => 200, 'x' => 10, 'y' => 10)
+}
+
+f1 = TkFrame.new(p) {
+  relief 'groove'
+  borderwidth 3
+  background "red"
+  padx 30
+  pady 30
+  pack('side' => 'left', 'pady' => 100)
+}
+f2 = TkFrame.new (p){
+  relief 'groove'
+  borderwidth 3
+  background "yellow"
+  padx 30
+  pady 30
+  pack('side' => 'right', 'pady' => 100)
+}
+p.add f1
+p.add f2
+f1.bind("ButtonRelease-1") { 
+   p.forget f1
+}
+Tk.mainloop
+
+#add: add frame vào paned
+
+#----------- Separator 
+require 'tk'
+require 'tkextlib/tile'
+
+$resultsVar = TkVariable.new
+root = TkRoot.new
+root.title = "Window"
+
+s1 = Tk::Tile::Separator.new(root) do
+   orient 'horizontal'
+   place('width' => 200, 'x' => 10, 'y' => 50)
+end
+
+s2 = Tk::Tile::Separator.new(root) do
+   orient 'vertical'
+   place('height' => 200, 'x' => 80, 'y' => 10)
+end
+
+Tk.mainloop
+
+#đường kẻ, dùng đê chia các group
+
+#----- menu
+require "tk"
+
+root = TkRoot.new
+root.title = "Window"
+
+
+menu_click = Proc.new {
+  Tk.messageBox(
+    'type'    => "ok",  
+    'icon'    => "info",
+    'title'   => "Title",
+    'message' => "mess"
+  )
+}
+      
+file_menu = TkMenu.new(root)
+
+file_menu.add('command',
+              'label'     => "New...",
+              'command'   => menu_click,
+              'underline' => 0)
+file_menu.add('command',
+              'label'     => "Open...",
+              'command'   => menu_click,
+              'underline' => 0)
+
+file_menu.add('separator')
+file_menu.add('command',
+              'label'     => "Save",
+              'command'   => menu_click,
+              'underline' => 0)
+
+file_menu.add('separator')
+file_menu.add('command',
+              'label'     => "Exit",
+              'command'   => menu_click,
+              'underline' => 3)
+
+menu_bar = TkMenu.new
+menu_bar.add('cascade',
+             'menu'  => file_menu,
+             'label' => "File")
+
+root.menu(menu_bar)
+file_menu.bind("1"){
+  file_menu.delete(0, 2)
+}
+Tk.mainloop
+
+#---- xem thêm https://www.tutorialspoint.com/ruby/ruby_tk_guide.htm
