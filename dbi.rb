@@ -236,5 +236,5 @@ ensure
     dbh.disconnect if dbh
 end
 
-#Driver-specific Functions và Attributes: 
-#
+
+# tham khảo https://www.tutorialspoint.com/ruby/ruby_database_access.htm
