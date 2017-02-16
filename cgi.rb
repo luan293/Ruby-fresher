@@ -5,7 +5,7 @@
 #$ sudo ln -s ../mods-available/cgi.load
 #$ sudo service apache2 reload
 #/usr/lib/cgi-bin  --- nơi chứa file cgi
-#/var/www/			--- nới chưa file html
+#/var/www/      --- nới chưa file html
 #dùng lệnh chmod để set permission cho thư mục
 #vd sudo chmod -R o+rw /var/www
 #dùng lệnh 'sudo chmod +x /usr/lib/cgi-bin/file-can-executable.rb' để file có thể thực thi
@@ -130,3 +130,47 @@ cookie = cgi.cookies['mycookie']
 cgi.out('cookie' => cookie) do
    cgi.head + cgi.body { cookie[0] }
 end
+
+#---- session
+#!/usr/bin/ruby
+
+require "cgi"
+require "cgi/session"
+
+cgi = CGI.new("html4")
+sess = CGI::Session.new( cgi, "session_key" => "rubyweb", 
+                          "session_id"  => "9650",      
+                          "new_session" => true,      
+                          "prefix" => "web-session.")
+sess["CustID"] = 123
+sess["Part"] = "ABC"
+
+cgi.out{
+  cgi.head + cgi.body{
+    "\nHTML content here"
+  }
+}
+#session_key: Key name ID. Default _session_id.
+#new_session: nếu là true sẽ tạo mới session id, 
+#nếu false, sử dug session cũ xác định bởi session_id
+#nếu không ghi method này sẽ bỏ qua nếu session đã tồn tại, tạo mới nếu chưa.
+#sess[key]=value
+
+
+#khi user vào lại web với params, trong vd này là rubyweb=9650
+#http://127.0.0.1/cgi-bin/test.rb?rubyweb=9650
+#!/usr/bin/ruby
+
+require "cgi"
+require "cgi/session"
+
+cgi = CGI.new("html4")
+sess = CGI::Session.new( cgi, "session_key" => "rubyweb",
+                               "prefix" => "web-session.")
+cgi.out{
+  cgi.head + cgi.body{
+    "\nCustomer #{sess['CustID']} orders an #{sess['Part']}"
+  }
+}
+
+
